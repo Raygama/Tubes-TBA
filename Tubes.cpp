@@ -131,6 +131,134 @@ bool subject(string word) {
 return ret;
 }
 
+bool keterangan(string word) {
+    bool ret = false;
+    string state = "A";
+    for(int i = 0;i < word.length();i++) {
+        //cout << state << endl;
+        if (word[i] == 'd') {
+            if (state == "A") {
+                state = "B";
+                ret = false;
+            } else if (state == "X") {
+                state = "K";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'i') {
+            if (state == "B") {
+                state = "C";
+                ret = false;
+            } else if (state == "H") {
+                state = "J";
+                ret = true;
+            } else if (state == "D") {
+                state = "F";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == ' ') {
+            if (state == "C") { 
+                state = "X";
+                ret = false;
+            }
+        } else if (word[i] == 's') {
+            if (state == "X") {
+                state = "D"; 
+                ret = false;
+            } else if (state == "R") {
+                state = "S";
+                ret = true;
+            }
+        } else if (word[i] == 'a') {
+            if (state == "X") {
+                state = "P";
+                ret = false;
+            } else if (state == "D") {
+                state = "E";
+                ret = false;
+            } else if (state == "G") {
+                state = "I";
+                ret = true;
+            } else if (state == "M") {
+                state = "N";
+                ret = false;
+            } else if (state == "Q") {
+                state = "R";
+                ret = false;
+            } else if (state == "T") {
+                state = "U";
+                ret = false;
+            } else if (state == "V") {
+                state = "W";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'b') {
+            if (state == "X") {
+                state = "T";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'n') {
+            if (state == "E") {
+                state = "G";
+                ret = false;
+            } else if (state == "F") {
+                state = "H";
+                ret = false;
+            } else if (state == "N") {
+                state = "O";
+                ret = true;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'e') {
+            if (state == "K") {
+                state = "L";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'p') {
+            if (state == "L") {
+                state = "M";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 't') {
+            if (state == "P") {
+                state = "Q";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'w') {
+            if (state == "U") {
+                state = "V";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'h') {
+            if (state == "W") {
+                state = "H";
+                ret = true;
+            } else {
+                ret = false;
+            }
+        } else {
+            ret = false;
+        }
+    }
+    return ret;
+}
 int main() {
     cout << subject("Kalian") << endl;
+    cout << keterangan("diatas") << endl;
 }
