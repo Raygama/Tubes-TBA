@@ -216,6 +216,7 @@ bool predikat(string word){
             ret = false;
         }
     }
+    return ret;
 }
 
 bool object(string word){
@@ -330,6 +331,7 @@ bool object(string word){
             ret = false;
         }
     }
+    return ret;
 }
 
 bool keterangan(string word) {
@@ -461,5 +463,7 @@ bool keterangan(string word) {
 }
 int main() {
     cout << subject("Kalian") << endl;
+    cout << predikat("Main") << endl;
+    cout << object("Kilat") << endl;
     cout << keterangan("diatas") << endl;
 }
