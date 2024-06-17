@@ -3,6 +3,9 @@
 #include <Stack>
 using namespace std;
 bool subject(string word);
+bool predikat(string word);
+bool object(string word);
+bool keterangan(string word);
 
 bool subject(string word) {
     bool ret = false;
@@ -129,6 +132,204 @@ bool subject(string word) {
         }
     }
 return ret;
+}
+
+bool predikat(string word){
+    bool ret = false;
+    string state = "A";
+    for(int i = 0;i < word.length();i++){
+        if (word[i] == 'M'){
+            if (state == "A"){
+                state = "B";
+                ret = false;
+            } else {
+                ret =  false;
+            }
+        } else if (word[i] == 'a'){
+            if (state == "B"){
+                state = "C";
+                ret = false;
+            } else if (state == "F"){
+                state = "G";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'i'){
+            if (state == "C"){
+                state = "D";
+                ret = false;
+            } else if (state == "N"){
+                state = "O"
+                ret = true;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'k'){
+            if (state == "C"){
+                state = "F";
+                ret = false;
+            } else if (state == "K"){
+                state = "L";
+                ret = true;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 's'){
+            if (state == "C"){
+                state = "J";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'n'){
+            if (state == "C"){
+                state = "M"
+                ret = false;
+            } else if (state == "D"){
+                state = "E";
+                ret = true;
+            } else if (state == "G"){
+                state = "H";
+                ret = true;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'u'){
+            if (state == "C"){
+                state = "I";
+                ret = true;
+            } else if (state == "J"){
+                state = "K";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'd'){
+            if (state == "M"){
+                state = "N";
+                ret = false
+            } else {
+                ret = false;
+            }
+        } else {
+            ret = false;
+        }
+    }
+}
+
+bool object(string word){
+    bool ret = false;
+    string state = "A";
+    for(int i = 0;i < word.length();i++){
+        if (word[i] == 'S'){
+            if (state == "A"){
+                state = "B";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'K'){
+            if (state == "A"){
+                state = "C";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'P'){
+            if (state == "A"){
+                state = "D";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'T'){
+            if (state == "A"){
+                state = "E";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'u'){
+            if (state == "B"){
+                state = "F";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'i'){
+            if (state == "C"){
+                state = "J";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'a'){
+            if (state == "D"){
+                state = "K";
+                ret = false;
+            } else if (state == "G"){
+                state = "H";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'e'){
+            if (state == "E"){
+                state = "L";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'r'){
+            if (state == "F"){
+                state = "G";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'l'){
+            if (state == "J"){
+                state = "G";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'h'){
+            if (state == "K"){
+                state = "G";
+                ret = false;
+            } else if (state == "L"){
+                state = "N";
+                ret = true;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'm'){
+            if (state == "L"){
+                state = "M";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 'p'){
+            if (state == "M"){
+                state = "G";
+                ret = false;
+            } else {
+                ret = false;
+            }
+        } else if (word[i] == 't'){
+            if (state == "H"){
+                state = "I";
+                ret = true;
+            } else {
+                ret = false;
+            }
+        } else {
+            ret = false;
+        }
+    }
 }
 
 bool keterangan(string word) {
