@@ -138,7 +138,7 @@ bool predikat(string word){
     bool ret = false;
     string state = "A";
     for(int i = 0;i < word.length();i++){
-        if (word[i] == 'M'){
+        if (word[i] == 'm'){
             if (state == "A"){
                 state = "B";
                 ret = false;
@@ -160,7 +160,7 @@ bool predikat(string word){
                 state = "D";
                 ret = false;
             } else if (state == "N"){
-                state = "O"
+                state = "O";
                 ret = true;
             } else {
                 ret = false;
@@ -184,7 +184,7 @@ bool predikat(string word){
             }
         } else if (word[i] == 'n'){
             if (state == "C"){
-                state = "M"
+                state = "M";
                 ret = false;
             } else if (state == "D"){
                 state = "E";
@@ -208,7 +208,7 @@ bool predikat(string word){
         } else if (word[i] == 'd'){
             if (state == "M"){
                 state = "N";
-                ret = false
+                ret = false;
             } else {
                 ret = false;
             }
@@ -223,31 +223,38 @@ bool object(string word){
     bool ret = false;
     string state = "A";
     for(int i = 0;i < word.length();i++){
-        if (word[i] == 'S'){
+        //cout << state << endl;
+        if (word[i] == 's'){
             if (state == "A"){
                 state = "B";
                 ret = false;
             } else {
                 ret = false;
             }
-        } else if (word[i] == 'K'){
+        } else if (word[i] == 'k'){
             if (state == "A"){
                 state = "C";
                 ret = false;
             } else {
                 ret = false;
             }
-        } else if (word[i] == 'P'){
+        } else if (word[i] == 'p'){
             if (state == "A"){
                 state = "D";
+                ret = false;
+            } else if (state == "M") {
+                state = "G";
                 ret = false;
             } else {
                 ret = false;
             }
-        } else if (word[i] == 'T'){
+        } else if (word[i] == 't'){
             if (state == "A"){
                 state = "E";
                 ret = false;
+            } else if (state == "H") {
+                state = "I";
+                ret = true;
             } else {
                 ret = false;
             }
@@ -462,8 +469,132 @@ bool keterangan(string word) {
     return ret;
 }
 int main() {
-    cout << subject("Kalian") << endl;
-    cout << predikat("Main") << endl;
-    cout << object("Kilat") << endl;
-    cout << keterangan("diatas") << endl;
+    string sentence;
+    string arr[100];
+    string words[10];
+    stack<string> mystack;
+    int counter = 0;
+    cout << "Masukan kata : ";
+    getline(cin, sentence);
+    string output;
+
+    bool isDi = false; // Menandakan apakah "di" telah ditemukan
+    string tempWord = "";
+
+    for (int i = 0; i < sentence.length(); i++) {
+        if (sentence.substr(i, 2) == "di" && (i == 0 || sentence[i-1] == ' ')) {
+            isDi = true;
+            tempWord += "di";
+            i += 1; // Langsung lompat setelah "di"
+        } else if (sentence[i] == ' ' && !isDi) {
+            if (!tempWord.empty()) {
+                words[counter++] = tempWord;
+                tempWord = "";
+            }
+        } else if (sentence[i] == ' ' && isDi) {
+            tempWord += sentence[i];
+            isDi = false; // Menyelesaikan penggabungan "di" dengan kata berikutnya
+        } else {
+            tempWord += sentence[i];
+        }
+    }
+
+    if (!tempWord.empty()) {
+        words[counter++] = tempWord; // Menyimpan kata terakhir
+    }
+    
+    mystack.push("#");
+    string states = "B";
+    for (int i = 0; i <= counter-1; i++) {
+        if (subject(words[i])) {
+            output += "S";
+            if (i != counter-1) {
+                output += "-";
+            }
+            if (states == "B") {
+                mystack.push("S");
+                states = "C";
+            }
+        } else if (predikat(words[i])) {
+            output += "P";
+            if (i != counter-1) {
+                output += "-";
+            }
+
+            if (states == "C") {
+                if (mystack.top() == "S") {
+                    mystack.pop();
+                    mystack.push("P");
+                    states = "D";
+                }
+                
+                if (i == counter - 1) {
+                    if (mystack.top() == "P") {
+                        mystack.pop();
+                        states = "H";
+                    }
+                }
+            }
+        } else if (object(words[i])) {
+            output += "O";
+            if (i != counter-1) {
+                output += "-";
+            }
+            if (states == "D") {
+                if (mystack.top() == "P") {
+                    mystack.pop();
+                    mystack.push("O");
+                    states = "E";
+                }
+
+                if (i == counter-1) {
+                    if (mystack.top() == "O") {
+                        mystack.pop();
+                        states = "H";
+                    }
+                }
+            }
+        } else if (keterangan(words[i])) {
+            output += "K";
+            if (i != counter-1) {
+                output += "-";
+            }
+            if (states == "D") {
+                if (mystack.top() == "P") {
+                    mystack.pop();
+                    mystack.push("K");
+                    states = "F";
+                }
+            } else if (states == "E") {
+                if (mystack.top() == "O") {
+                    mystack.pop();
+                    mystack.push("K");
+                    states = "G";
+                }
+            }
+            if (i == counter-1) {
+                if (mystack.top() == "K") {
+                    mystack.pop();
+                    states = "H";
+                }
+            }
+        } else {
+            output += "Tidak diketahui";
+            if (i != counter-1) {
+                output += "-";
+            }
+            mystack.push("e");
+        }
+    }
+    if (states == "H") {
+        if (mystack.top() == "#") {
+            mystack.pop();
+        }
+    }
+    if (mystack.empty()) {
+        cout << "KALIMAT" << endl;
+    } else {
+        cout << "BUKAN KALIMAT" << endl;
+    }
+    cout << "Struktur Kalimat : " << output << endl; 
 }
